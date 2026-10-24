@@ -10,7 +10,7 @@ projektmappe/
 │   ├── middleware/    Logging, inputvalidering, 404-handler for ukendte routes, central error-handler
 │   └── app.js         Opretter Express-app, registrerer middleware og routes, eksporterer app
 ├── postman/           Postman Collection "Star Wars API"
-├── rebel-alliance.txt Fil til GET /download (må IKKE ligge i public/)
+├── rebel-alliance.txt Fil til GET /download (uden for public/, så den kun hentes via /download)
 ├── server.js          Importerer app fra src/app.js og kalder listen (port 3000)
 └── README.md          Arkitektur, Mermaid-diagram, begrundelser og kode-review
 ```
