@@ -14,7 +14,15 @@ projektmappe/
 ├── server.js          Importerer app fra src/app.js og kalder listen (port 3000)
 └── README.md          Arkitektur, Mermaid-diagram, begrundelser og kode-review
 ```
+## Mermaid diagram
 
+```mermaid
+flowchart TD
+    A["Frontend (public/) / Postman"] --> M["middleware/"]
+    M --> B["routes/"]
+    B --> C["controllers/"]
+    C --> D["models/"]
+```
 ## Arkitektur
 
 - **HTTP-requests:** `routes/` definerer endpoints, `controllers/` læser request og sender response med statuskode.
@@ -29,3 +37,5 @@ projektmappe/
 **Ulemper:** Data forsvinder ved genstart. Hver route skal huske at bruge validerings-middleware.
 
 **Fravalgt:** Separate `services/` og `data/`. Med kun et array ville service-laget bare sende kald videre. Bliver projektet større, fx med en database, vil vi dele `models/` op.
+
+
