@@ -1,3 +1,19 @@
+## Valgt projektstruktur
+ 
+```
+projektmappe/
+├── public/            Frontend: index.html, main.js, style.css (serveres med express.static)
+├── src/
+│   ├── routes/        Kun routing: hvilke URL'er og metoder findes, og hvilken controller-funktion håndterer dem
+│   ├── controllers/   Læser req (params/body), kalder modellen, sender response med korrekt statuskode
+│   ├── models/        Det midlertidige data-array og funktioner til at hente, oprette, erstatte og slette karakterer, inkl. ID-generering. Eksporterer funktioner, ikke selve arrayet
+│   ├── middleware/    Logging, inputvalidering, 404-handler for ukendte routes, central error-handler
+│   └── app.js         Opretter Express-app, registrerer middleware og routes, eksporterer app
+├── postman/           Postman Collection "Star Wars API"
+├── rebel-alliance.txt Fil til GET /download (må IKKE ligge i public/)
+├── server.js          Importerer app fra src/app.js og kalder listen (port 3000)
+└── README.md          Arkitektur, Mermaid-diagram, begrundelser og kode-review
+
 ## Arkitektur
 
 - **HTTP-requests:** `routes/` definerer endpoints, `controllers/` læser request og sender response med statuskode.
