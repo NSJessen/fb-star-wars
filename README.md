@@ -13,6 +13,7 @@ projektmappe/
 ├── rebel-alliance.txt Fil til GET /download (må IKKE ligge i public/)
 ├── server.js          Importerer app fra src/app.js og kalder listen (port 3000)
 └── README.md          Arkitektur, Mermaid-diagram, begrundelser og kode-review
+```
 
 ## Arkitektur
 
