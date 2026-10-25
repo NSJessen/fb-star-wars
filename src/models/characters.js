@@ -5,8 +5,10 @@ const characters = [
     { id: 4, name: 'Han Solo', role: 'Smuggler', planet: 'Corellia'},
 ];
 
+// Beregnes én gang når programmet startes. Tælleren går kun op, så et ID genbruges aldrig efter sletning.
 let nextId = Math.max(...characters.map(c => c.id)) + 1;
 
+// Returnerer næste ledige ID og tæller op til det næste.
 function generateId() {
     const id = nextId;
     nextId = nextId + 1;
