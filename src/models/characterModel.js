@@ -25,7 +25,7 @@ function getCharacterById(id) {
     return characters.find(c => c.id === id);
 }
 
-// Opretter en karakter, objektet characterData modtager fra POST-request body. Returnerer den oprettede karakter med nyt ID.
+// Opretter en karakter, objektet characterData indeholder data fra POST-request body. Returnerer den oprettede karakter med nyt ID.
 function createCharacter(characterData) {
     const character = {
         ...characterData,
@@ -36,4 +36,23 @@ function createCharacter(characterData) {
     return character;
 }
 
-module.exports = {generateId, getAllCharacters, getCharacterById, createCharacter};
+// Erstatter en karakter. Returnerer undefined, hvis ID'et ikke findes.
+function replaceCharacter(id, characterData) {
+    // Find indekset for karakteren med det givne ID
+    const index = characters.findIndex(character => character.id === id);
+
+    if (index === -1) {
+        return undefined;
+    }
+
+    const updatedCharacter = {
+        ...characterData,
+        id: id
+    };
+
+    // Erstat karakteren i arrayet med den opdaterede karakter
+    characters[index] = updatedCharacter;
+    return updatedCharacter;
+}
+
+module.exports = {generateId, getAllCharacters, getCharacterById, createCharacter, replaceCharacter};

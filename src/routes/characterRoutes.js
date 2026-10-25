@@ -9,5 +9,7 @@ router.get( '/:id', characterController.getById);
 
 router.post('/', characterController.create);
 
+router.put('/:id', characterController.replace);
+
 module.exports = router;
 
