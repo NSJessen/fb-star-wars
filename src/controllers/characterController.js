@@ -21,4 +21,10 @@ function getById(req, res) {
 
 }
 
-module.exports = {getAll, getById};
+// POST /characters opretter en karakter ud fra JSON i request body.
+function create(req, res) {
+    const character = characterModel.createCharacter(req.body);
+    res.status(201).json(character);
+}
+
+module.exports = {getAll, getById, create};

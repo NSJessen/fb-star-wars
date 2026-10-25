@@ -25,4 +25,15 @@ function getCharacterById(id) {
     return characters.find(c => c.id === id);
 }
 
-module.exports = {generateId, getAllCharacters, getCharacterById};
+// Opretter en karakter, objektet characterData modtager fra POST-request body. Returnerer den oprettede karakter med nyt ID.
+function createCharacter(characterData) {
+    const character = {
+        ...characterData,
+        id: generateId()
+    };
+
+    characters.push(character);
+    return character;
+}
+
+module.exports = {generateId, getAllCharacters, getCharacterById, createCharacter};
