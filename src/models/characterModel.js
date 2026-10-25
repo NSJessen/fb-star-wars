@@ -15,8 +15,14 @@ function generateId() {
     return id;
 }
 
+// Returnerer alle karakterer.
 function getAllCharacters() {
     return characters;
 }
 
-module.exports = {generateId, getAllCharacters};
+// Tager et Id og returnerer den karakter, det har det Id, eller undefined hvis den ikke findes.
+function getCharacterById(id) {
+    return characters.find(c => c.id === id);
+}
+
+module.exports = {generateId, getAllCharacters, getCharacterById};
