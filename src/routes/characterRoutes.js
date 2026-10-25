@@ -7,5 +7,7 @@ router.get('/', characterController.getAll);
 
 router.get( '/:id', characterController.getById);
 
+router.post('/', characterController.create);
+
 module.exports = router;
 
