@@ -11,5 +11,7 @@ router.post('/', characterController.create);
 
 router.put('/:id', characterController.replace);
 
+router.delete('/:id', characterController.remove);
+
 module.exports = router;
 
