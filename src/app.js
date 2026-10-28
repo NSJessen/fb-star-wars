@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const characterRouter = require('./routes/characterRoutes');
+const notFound = require('./middleware/notFound');
+const errorHandler = require('./middleware/errorHandler');
 const logger = require('./middleware/logger');
 
 // logger står først så alt logges
@@ -11,5 +13,7 @@ app.use(express.json());
 
 app.use('/characters', characterRouter);
 
+app.use(notFound);
+app.use(errorHandler);
 
 module.exports = app;
