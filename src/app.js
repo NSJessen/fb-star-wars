@@ -3,6 +3,10 @@ const app = express();
 const characterRouter = require('./routes/characterRoutes');
 const notFound = require('./middleware/notFound');
 const errorHandler = require('./middleware/errorHandler');
+const logger = require('./middleware/logger');
+
+// logger står først så alt logges
+app.use(logger);
 
 // Middleware og routes køres i den rækkefølge, de registreres. JSON-parseren skal stå før routes.
 app.use(express.json());

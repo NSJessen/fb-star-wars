@@ -14,7 +14,7 @@ function getById(req, res) {
 
     // return stopper funktionen, så der ikke også sendes et 200-svar.
     if (!character) {
-        return res.status(404).json({ error: 'Karakteren findes ikke'});
+        return res.status(404).json({error: 'Karakteren findes ikke'});
     }
 
     res.status(200).json(character);
@@ -24,12 +24,6 @@ function getById(req, res) {
 // POST /characters opretter en karakter ud fra JSON i request body.
 function create(req, res) {
     const character = characterModel.createCharacter(req.body);
-    const characterData = req.body;
-
-    if (!characterData || !characterData.name || !characterData.role || !characterData.planet) {
-        return res.status(400).json({ error: 'Name, role og planet skal udfyldes' });
-    }
-
     res.status(201).json(character);
 }
 
@@ -38,17 +32,25 @@ function replace(req, res) {
     const id = Number(req.params.id);
     const characterData = req.body;
 
-    if (!characterData || !characterData.name || !characterData.role || !characterData.planet) {
-        return res.status(400).json({ error: 'Name, role og planet skal udfyldes' });
-    }
-    
     const updatedCharacter = characterModel.replaceCharacter(id, characterData);
 
     if (!updatedCharacter) {
-        return res.status(404).json({ error: 'Karakteren findes ikke' });
+        return res.status(404).json({error: 'Karakteren findes ikke'});
     }
 
     res.status(200).json(updatedCharacter);
 }
 
-module.exports = {getAll, getById, create, replace};
+// delete endpoint der kalder på deleteCharacter og returnere 204 hvis det lykkedes ellers 404
+function remove(req, res) {
+    const id = Number(req.params.id);
+    const deleted = characterModel.deleteCharacter(id);
+
+    if (!deleted) {
+        return res.status(404).json({error: 'Der kunne ikke findes en karakter med det ID'});
+    }
+
+    res.status(204).send();
+}
+
+module.exports = {getAll, getById, create, replace, remove};
