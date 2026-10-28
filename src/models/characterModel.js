@@ -1,8 +1,8 @@
 const characters = [
-    { id: 1, name: 'Luke Skywalker', role: 'Jedi', planet: 'Tatooine'},
-    { id: 2, name: 'Darth Vader', role: 'Sith', planet: 'Tatooine'},
-    { id: 3, name: 'Leia Organa', role: 'Rebel', planet: 'Alderaan'},
-    { id: 4, name: 'Han Solo', role: 'Smuggler', planet: 'Corellia'},
+    {id: 1, name: 'Luke Skywalker', role: 'Jedi', planet: 'Tatooine'},
+    {id: 2, name: 'Darth Vader', role: 'Sith', planet: 'Tatooine'},
+    {id: 3, name: 'Leia Organa', role: 'Rebel', planet: 'Alderaan'},
+    {id: 4, name: 'Han Solo', role: 'Smuggler', planet: 'Corellia'},
 ];
 
 // Beregnes én gang når programmet startes. Tælleren går kun op, så et ID genbruges aldrig efter sletning.
@@ -55,4 +55,16 @@ function replaceCharacter(id, characterData) {
     return updatedCharacter;
 }
 
-module.exports = {generateId, getAllCharacters, getCharacterById, createCharacter, replaceCharacter};
+// fjerner en karakter med id og returnerer true hvis det lykkedes ellers, flase
+function deleteCharacter(id) {
+    const index = characters.findIndex(character => character.id === id);
+
+    if (index === -1) {
+        return false;
+    }
+
+    characters.splice(index, 1);
+    return true;
+}
+
+module.exports = {generateId, getAllCharacters, getCharacterById, createCharacter, replaceCharacter, deleteCharacter};

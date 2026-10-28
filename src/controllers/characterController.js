@@ -41,4 +41,16 @@ function replace(req, res) {
     res.status(200).json(updatedCharacter);
 }
 
-module.exports = {getAll, getById, create, replace};
+// delete endpoint der kalder på deleteCharacter og returnere 204 hvis det lykkedes ellers 404
+function remove(req, res) {
+    const id = Number(req.params.id);
+    const deleted = characterModel.deleteCharacter(id);
+
+    if (!deleted) {
+        return res.status(404).json({error: 'Der kunne ikke findes en karakter med det ID'});
+    }
+
+    res.status(204).send();
+}
+
+module.exports = {getAll, getById, create, replace, remove};
