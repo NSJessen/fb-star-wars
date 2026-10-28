@@ -24,12 +24,6 @@ function getById(req, res) {
 // POST /characters opretter en karakter ud fra JSON i request body.
 function create(req, res) {
     const character = characterModel.createCharacter(req.body);
-    const characterData = req.body;
-
-    if (!characterData || !characterData.name || !characterData.role || !characterData.planet) {
-        return res.status(400).json({error: 'Name, role og planet skal udfyldes'});
-    }
-
     res.status(201).json(character);
 }
 
@@ -37,10 +31,6 @@ function create(req, res) {
 function replace(req, res) {
     const id = Number(req.params.id);
     const characterData = req.body;
-
-    if (!characterData || !characterData.name || !characterData.role || !characterData.planet) {
-        return res.status(400).json({error: 'Name, role og planet skal udfyldes'});
-    }
 
     const updatedCharacter = characterModel.replaceCharacter(id, characterData);
 
