@@ -6,15 +6,15 @@ function validateCharacter(req, res, next) {
     const { name, role, planet } = req.body || {};
 
     if (typeof name !== 'string' || name.trim().length < 2) {
-        return res.status(400).json({ error: 'Name must be at least 2 characters' });
+        return res.status(400).json({ error: 'Navn skal være mindst 2 tegn' });
     }
 
     if (!ROLES.includes(role)) {
-        return res.status(400).json({ error: 'Role must be Jedi, Sith, Rebel or Smuggler' });
+        return res.status(400).json({ error: 'Rolle skal være Jedi, Sith, Rebel eller Smuggler' });
     }
 
     if (typeof planet !== 'string' || planet.trim() === '') {
-        return res.status(400).json({ error: 'Planet must not be empty' });
+        return res.status(400).json({ error: 'Planet må ikke være tom' });
     }
 
     next();

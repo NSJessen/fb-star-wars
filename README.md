@@ -144,4 +144,15 @@ Vi åbnede `http://localhost:3000`, gik til Developer Tools → Network og genin
 4. Værdierne sættes med `textContent`, så de vises som tekst og aldrig tolkes som HTML.
 5. `tbody.appendChild(tr)` sætter rækken ind i tabellen, så den vises på siden.
 
+## Eget kode-review
+
+### Forbedringsforslag
+
+1. **Ensartede fejlbeskeder** (`characterController.js`, `validateCharacter.js`, `notFound.js`): "Karakteren findes ikke" i `getById`/`replace` men "Der kunne ikke findes en karakter med det ID" i `remove`, og `validateCharacter` svarer på engelsk. Vi burde bruge samme sprog og samme tekst for samme fejl.
+2. **Gem kun kendte felter** (`createCharacter` og `replaceCharacter` i `characterModel.js`): `...characterData` gemmer alt fra request body, fx `{ "admin": true }`, fordi valideringen kun tjekker `name`, `role` og `planet`. Vi bør kun gemme de tre felter.
+
+### Gennemført Forbedringsforslag 
+
+Vi valgte selv at rette fejlbeskederne, da det var det første, vi lagde mærke til under gennemgangen. Alle fejlbeskeder er nu på dansk, og samme fejl har samme tekst, fx "Karakteren findes ikke" i både `getById`, `replace` og `remove`. Det kan være forvirrende som bruger at sidde og få fejlbeskeder på to forskellige sprog.
+
 
