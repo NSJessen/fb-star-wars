@@ -155,4 +155,18 @@ Vi åbnede `http://localhost:3000`, gik til Developer Tools → Network og genin
 
 Vi valgte selv at rette fejlbeskederne, da det var det første, vi lagde mærke til under gennemgangen. Alle fejlbeskeder er nu på dansk, og samme fejl har samme tekst, fx "Karakteren findes ikke" i både `getById`, `replace` og `remove`. Det kan være forvirrende som bruger at sidde og få fejlbeskeder på to forskellige sprog.
 
+## Review med AI-agent
+
+Vi bad en AI-agent om at reviewe `src/` og `public/` med fokus på arkitektur, ansvarsfordeling, validering, fejlhåndtering og testbarhed. Forslagene er vurderet op imod vores valg af `routes/`, `controllers/`, `models/` og `middleware/`.
+
+### Accepterede forslag
+
+1. **Gem kun kendte felter** (`pickFields` i `characterModel.js`): Modellen gemte hele request body, så fx `{ "admin": true }` kom med. Nu gemmes kun `name`, `role` og `planet`, og navn og planet trimmes. Det var også vores eget forslag #2, så vi var enige i problemet.
+2. **400 ved ugyldigt ID** (`middleware/validateId.js`): `/characters/abc` gav 404 "Karakteren findes ikke", fordi `Number('abc')` er `NaN`. Nu giver ugyldige ID'er 400, så klienten kan se forskel på forkert input og en karakter, der ikke findes. Det passer med vores struktur, hvor validering ligger i `middleware/` før controlleren.
+
+### Afviste forslag
+
+- **Separate `services/` og `data/`:** Afvist. Med ét array ville et service-lag bare sende kaldene videre (se "Fravalgt" under Arkitektur). Problemerne ovenfor kunne løses i de lag, vi allerede har.
+- **Deaktivér submit-knappen under oprettelse** (`public/main.js`): Agenten mente, at et dobbeltklik kan oprette den samme karakter to gange. Afvist, fordi to ens karakterer er tilladt, så længe de har hvert sit ID, og det sikrer vores ID-tæller.
+
 

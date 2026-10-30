@@ -17,19 +17,28 @@ function generateId() {
 
 // Returnerer alle karakterer.
 function getAllCharacters() {
-    return characters;
+    return [...characters];
 }
 
 // Tager et Id og returnerer den karakter, det har det Id, eller undefined hvis den ikke findes.
 function getCharacterById(id) {
     return characters.find(c => c.id === id);
 }
+// AI Agentens Forslag #1
+// Plukker kun de kendte felter ud af request body og trimmer dem, så ekstra felter fx { admin: true } aldrig gemmes.
+function pickFields(characterData) {
+    return {
+        name: characterData.name.trim(),
+        role: characterData.role,
+        planet: characterData.planet.trim()
+    };
+}
 
 // Opretter en karakter, objektet characterData indeholder data fra POST-request body. Returnerer den oprettede karakter med nyt ID.
 function createCharacter(characterData) {
     const character = {
-        ...characterData,
-        id: generateId()
+        id: generateId(),
+        ...pickFields(characterData)
     };
 
     characters.push(character);
@@ -46,8 +55,8 @@ function replaceCharacter(id, characterData) {
     }
 
     const updatedCharacter = {
-        ...characterData,
-        id: id
+        id: id,
+        ...pickFields(characterData)
     };
 
     // Erstat karakteren i arrayet med den opdaterede karakter
@@ -67,4 +76,4 @@ function deleteCharacter(id) {
     return true;
 }
 
-module.exports = {generateId, getAllCharacters, getCharacterById, createCharacter, replaceCharacter, deleteCharacter};
+module.exports = {getAllCharacters, getCharacterById, createCharacter, replaceCharacter, deleteCharacter};
