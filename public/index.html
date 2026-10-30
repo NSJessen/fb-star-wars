@@ -8,6 +8,22 @@
 </head>
 <body>
   <h1>Jedi Data Archives</h1>
+  <!-- novalidate, så serverens valideringsbesked vises i stedet for browserens -->
+  <form id="character-form" novalidate>
+    <label>Navn <input name="name" type="text"></label>
+    <label>Rolle
+      <select name="role">
+        <option value="">Vælg rolle</option>
+        <option>Jedi</option>
+        <option>Sith</option>
+        <option>Rebel</option>
+        <option>Smuggler</option>
+      </select>
+    </label>
+    <label>Planet <input name="planet" type="text"></label>
+    <button type="submit">Opret</button>
+  </form>
+  <p id="form-error" role="alert" hidden></p>
   <table>
     <thead>
       <tr><th>Navn</th><th>Rolle</th><th>Planet</th></tr>
