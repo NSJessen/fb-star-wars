@@ -118,3 +118,13 @@ Tommelfingerregel: **4xx** betyder "klienten skal rette noget", **5xx** betyder 
 At en karakter ikke findes, er ikke en fejl i serveren. Serveren har gjort præcis det, den skal: slået ID'et op og fundet ud af, at der ikke er noget. Det er et forventet udfald, som sker ved helt normal brug (fx en slettet karakter eller en tastefejl i ID'et), og det er klientens request, der peger på noget forkert. Derfor returnerer controlleren `404` med beskeden "Karakteren findes ikke" via `return res.status(404)...`.
 
 500 er forbeholdt det uventede, fx en bug eller en exception. Hvis "findes ikke" gav 500, ville vi ikke kunne se forskel på almindelig brugerfejl og rigtige serverfejl i logs og overvågning, og klienten ville tro, at det kunne hjælpe at prøve igen.
+
+## `res.download()` og `res.redirect()`
+
+`res.download()` sender en fil til klienten som en download. Express sætter de relevante HTTP-headere, blandt andet `Content-Disposition: attachment`, så browseren typisk gemmer filen i stedet for at vise den. I dette projekt henter `GET /download` filen `rebel-alliance.txt`.
+
+`res.redirect()` sender et redirect-svar til klienten. Svaret indeholder en `Location`-header med den nye adresse, hvorefter browseren eller klienten laver en ny request til den adresse. `GET /go-to-luke` redirecter for eksempel til `/characters/1`.
+
+Man kan ikke bruge begge metoder på samme request, fordi et HTTP-request kun kan have ét response. Både `res.download()` og `res.redirect()` sender et afsluttende svar med headers og response-body. Når det første svar er sendt, er headers allerede sendt til klienten, og Express kan derfor ikke sende et andet svar. Det vil normalt give fejlen `Cannot set headers after they are sent to the client`.
+
+
