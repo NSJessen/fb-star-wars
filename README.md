@@ -36,9 +36,9 @@ flowchart TD
 
 **Ulemper:** Data forsvinder ved genstart. Hver route skal huske at bruge validerings-middleware.
 
-*Fravalgt:** Separate `services/` og `data/`. Med kun et array ville service-laget bare sende kald videre. Bliver projektet større, fx med en database, vil vi dele `models/` op.
+**Fravalgt:** Separate `services/` og `data/`. Med kun et array ville service-laget bare sende kald videre. Bliver projektet større, fx med en database, vil vi dele `models/` op.
 
-## Midlertidig data i hukommelsen
+## Dokumentation af ID-strategi og datalagring
 
 `src/models/characterModel.js` bruger et array som midlertidig database. Derfor er data kun tilgængelige, mens Node-serveren kører. Når serveren genstartes, bliver filen indlæst igen med de oprindelige hardkodede karakterer. Karakterer, der er oprettet, ændret eller slettet under den forrige kørsel, går dermed tabt.
 
