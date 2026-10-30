@@ -38,6 +38,14 @@ flowchart TD
 
 **Fravalgt:** Separate `services/` og `data/`. Med kun et array ville service-laget bare sende kald videre. Bliver projektet større, fx med en database, vil vi dele `models/` op.
 
+## Dokumentation af ID-strategi og datalagring
+
+`src/models/characterModel.js` bruger et array som midlertidig database. Derfor er data kun tilgængelige, mens Node-serveren kører. Når serveren genstartes, bliver filen indlæst igen med de oprindelige hardkodede karakterer. Karakterer, der er oprettet, ændret eller slettet under den forrige kørsel, går dermed tabt.
+
+Det er også en dårlig idé at bruge arrayets længde som ID, for eksempel `characters.length + 1`. Hvis der er fire karakterer, og karakteren med ID 2 slettes, er arrayets længde 3. Den næste karakter ville så få ID 4, selv om der allerede findes en karakter med ID 4. Det giver to karakterer med samme ID.
+
+I den nuværende løsning tæller `nextId` i modellen i stedet op for hver ny karakter, så et ID ikke genbruges efter en sletning, mens serveren kører. Ved en genstart nulstilles tælleren dog sammen med arrayet. I produktion bruges en rigtig database, fordi den gemmer data mellem genstarter og kan håndtere unikke ID'er mere robust, også når flere brugere eller servere arbejder med de samme data.
+
 
 ## Eksperiment: middleware og statuskoder (US-12)
 
