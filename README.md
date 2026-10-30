@@ -127,4 +127,21 @@ At en karakter ikke findes, er ikke en fejl i serveren. Serveren har gjort præc
 
 Man kan ikke bruge begge metoder på samme request, fordi et HTTP-request kun kan have ét response. Både `res.download()` og `res.redirect()` sender et afsluttende svar med headers og response-body. Når det første svar er sendt, er headers allerede sendt til klienten, og Express kan derfor ikke sende et andet svar. Det vil normalt give fejlen `Cannot set headers after they are sent to the client`.
 
+## Samspil mellem frontend og backend
+
+Vi åbnede `http://localhost:3000`, gik til Developer Tools → Network og genindlæste siden. Her ses den request, `public/main.js` sender for at hente karaktererne.
+
+**Hvilken HTTP-metode bruges?** `GET`. `fetch('/characters')` bruger GET, når man ikke angiver en metode.
+
+**Hvilken statuskode returneres?** `200 OK`. Den sættes i controlleren `getAll` med `res.status(200).json(characters)`.
+
+**Hvad indeholder response-bodyen?** Et JSON-array med alle karakterer. Hver karakter er et objekt med `id`, `name`, `role` og `planet`. Headeren `Content-Type: application/json` fortæller browseren, at svaret er JSON.
+
+**Hvordan omsættes JSON til elementer på siden?** I `loadCharacters()` i `public/main.js`:
+1. `res.json()` laver response-bodyen om fra tekst til et JavaScript-array.
+2. `tbody.replaceChildren()` tømmer tabellen, så den kan bygges forfra.
+3. `forEach` laver én `<tr>` pr. karakter og én `<td>` pr. felt (`name`, `role`, `planet`).
+4. Værdierne sættes med `textContent`, så de vises som tekst og aldrig tolkes som HTML.
+5. `tbody.appendChild(tr)` sætter rækken ind i tabellen, så den vises på siden.
+
 
