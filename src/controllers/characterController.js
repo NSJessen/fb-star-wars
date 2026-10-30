@@ -47,7 +47,7 @@ function remove(req, res) {
     const deleted = characterModel.deleteCharacter(id);
 
     if (!deleted) {
-        return res.status(404).json({error: 'Der kunne ikke findes en karakter med det ID'});
+        return res.status(404).json({error: 'Karakteren findes ikke'});
     }
 
     res.status(204).send();
