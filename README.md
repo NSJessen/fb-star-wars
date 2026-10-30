@@ -1,3 +1,28 @@
+## Installation og start
+
+Kræver [Node.js](https://nodejs.org/) (inkl. npm).
+
+```bash
+npm install
+npm start
+```
+
+Serveren kører på `http://localhost:3000`. Åbn adressen i browseren for at se frontenden.
+
+## API-endpoints
+
+| Metode | URL | Beskrivelse | Statuskoder |
+|--------|-----|-------------|-------------|
+| GET | `/characters` | Hent alle karakterer | 200 |
+| GET | `/characters/:id` | Hent én karakter | 200, 400, 404 |
+| POST | `/characters` | Opret en karakter (`name`, `role`, `planet` i JSON-body) | 201, 400 |
+| PUT | `/characters/:id` | Erstat en eksisterende karakter | 200, 400, 404 |
+| DELETE | `/characters/:id` | Slet en karakter | 204, 400, 404 |
+| GET | `/download` | Download `rebel-alliance.txt` | 200 |
+| GET | `/go-to-luke` | Redirect til `/characters/1` | 302 |
+
+`role` skal være `Jedi`, `Sith`, `Rebel` eller `Smuggler`. `:id` skal være et positivt heltal, ellers svarer API'et 400.
+
 ## Valgt projektstruktur
  
 ```
@@ -14,7 +39,7 @@ projektmappe/
 ├── server.js          Importerer app fra src/app.js og kalder listen (port 3000)
 └── README.md          Arkitektur, Mermaid-diagram, begrundelser og kode-review
 ```
-## Mermaid diagram
+## Initial Mermaid Diagram
 
 ```mermaid
 flowchart TD
@@ -22,6 +47,21 @@ flowchart TD
     M --> B["routes/"]
     B --> C["controllers/"]
     C --> D["models/"]
+```
+
+## Endelige Mermaid Diagram
+
+Validering kører inde i routes lige før controlleren, og fejl ender i `notFound` eller `errorHandler`.
+
+```mermaid
+flowchart TD
+    A["Frontend (public/) / Postman"] --> L["middleware/: logger, express.json"]
+    L --> B["routes/"]
+    B --> V["middleware/: validateId, validateCharacter"]
+    V --> C["controllers/"]
+    C --> D["models/"]
+    B -. "ingen route" .-> N["middleware/: notFound (404)"]
+    C -. "uventet fejl" .-> E["middleware/: errorHandler (500)"]
 ```
 ## Arkitektur
 
@@ -70,7 +110,7 @@ POST {{baseUrl}}/characters - Opret uden navn (400)
 
 POST {{baseUrl}}/characters - Opret med ugyldig rolle (400)
 
-![img_6.png](postman/img_6.png)!
+![img_6.png](postman/img_6.png)
 
 POST {{baseUrl}}/characters - Opret uden planet (400)
 
@@ -168,5 +208,17 @@ Vi bad en AI-agent om at reviewe `src/` og `public/` med fokus på arkitektur, a
 
 - **Separate `services/` og `data/`:** Afvist. Med ét array ville et service-lag bare sende kaldene videre (se "Fravalgt" under Arkitektur). Problemerne ovenfor kunne løses i de lag, vi allerede har.
 - **Deaktivér submit-knappen under oprettelse** (`public/main.js`): Agenten mente, at et dobbeltklik kan oprette den samme karakter to gange. Afvist, fordi to ens karakterer er tilladt, så længe de har hvert sit ID, og det sikrer vores ID-tæller.
+
+## Refleksion
+
+**Hvilken arkitektur har vi valgt, og hvorfor?** MVC-inspireret: `public/` er View, `controllers/` er Controller og `models/` er Model, med `routes/` og `middleware/` foran. Det er nok til én ressource og et array, så vi undgik ekstra lag som `services/` og `data/`.
+
+**Hvad ville vi ændre ved mange brugere?** Skifte arrayet ud med en database, så data gemmes mellem genstarter.
+
+**Hvilke fejl fandt vi?** Fejlbeskeder på to sprog, ekstra felter fra request body blev gemt, og et ugyldigt ID som `abc` gav 404 i stedet for 400.
+
+**Hvilken forbedring gennemførte vi efter kode-review?** Ensartede danske fejlbeskeder, at modellen kun gemmer `name`, `role` og `planet`, og 400 ved ugyldigt ID.
+
+**Hvad lærte vi om samspillet mellem frontend og backend?** De taler kun sammen via HTTP og JSON. Frontenden bruger statuskoden til at se, om det gik godt, og viser `error`-beskeden fra backenden, hvis det ikke gjorde.
 
 
